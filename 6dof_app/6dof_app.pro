@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui serialport
+QT       += core gui serialport charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,11 +27,17 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    selectport_dialog.cpp
+    selectport_dialog.cpp \
+    terminal.cpp \
+    imuparser.cpp \
+    xyseries.cpp
 
 HEADERS += \
         mainwindow.h \
-    selectport_dialog.h
+    selectport_dialog.h \
+    terminal.h \
+    imuparser.h \
+    xyseries.h
 
 FORMS += \
         mainwindow.ui

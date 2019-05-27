@@ -20,6 +20,9 @@ int main(int argc, char *argv[])
             auto port = selectPort.GetSelectedPort();
             serial.close();
             serial.setPortName(port);
+            serial.setParity(QSerialPort::Parity::NoParity);
+            serial.setBaudRate(115200);
+            serial.setDataBits(QSerialPort::DataBits::Data8);
             if(!serial.open(QIODevice::ReadWrite)){
                 auto msg = QObject::tr("Can't open %1, error code %2").arg(port).arg(serial.error());
                 qDebug() << msg;
