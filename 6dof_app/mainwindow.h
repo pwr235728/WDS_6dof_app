@@ -34,10 +34,14 @@ private:
 
     QByteArray *receivedData = nullptr;
 
-    QLineSeries *series = nullptr;
-    XYSeries *xy_device = nullptr;
+    QLineSeries* acc_series[3];
+    XYSeries* acc_device[3];
 
-    QByteArray x_arr;
+    QLineSeries* gyro_series[3];
+    XYSeries *gyro_device[3];
+
+    QVector<int16_t> acc[3];    // [X; Y; Z]
+    QVector<int16_t> gyro[3];   // [X; Y; Z]
 
 private slots:
     void readSerial();
