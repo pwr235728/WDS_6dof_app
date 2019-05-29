@@ -41,7 +41,7 @@ MainWindow::MainWindow(QSerialPort &port, QWidget *parent) :
     {
         auto acc_chart = new QChart();
         acc_chartView[i] = new QChartView(acc_chart);
-        acc_chartView[i]->setMinimumSize(800,300);
+        acc_chartView[i]->setMinimumSize(400,100);
         acc_chart->addSeries(acc_series[i]);
         auto acc_axisX = new QValueAxis();
         acc_axisX->setRange(0, XYSeries::sampleCount);
@@ -70,7 +70,7 @@ MainWindow::MainWindow(QSerialPort &port, QWidget *parent) :
     {
         auto gyro_chart = new QChart();
         gyro_chartView[i] = new QChartView(gyro_chart);
-        gyro_chartView[i]->setMinimumSize(800,300);
+        gyro_chartView[i]->setMinimumSize(400,100);
         gyro_chart->addSeries(gyro_series[i]);
         auto gyro_axisX = new QValueAxis();
         gyro_axisX->setRange(0, XYSeries::sampleCount);
