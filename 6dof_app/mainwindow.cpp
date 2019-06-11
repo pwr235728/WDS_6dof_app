@@ -27,8 +27,15 @@ MainWindow::MainWindow(QSerialPort &port, QWidget *parent) :
     gyro_series[1] = new QLineSeries();
     gyro_series[2] = new QLineSeries();
 
+    orientation_series[0] = new QLineSeries();
+    orientation_series[2] = new QLineSeries();
+    orientation_series[1] = new QLineSeries();
+
+
     QChartView* acc_chartView[3];
     QChartView* gyro_chartView[3];
+    QChartView* orientation_chartView[3];
+
 
     QString acc_title[3];
     acc_title[0] = "Accelerometer X axis";
@@ -39,6 +46,12 @@ MainWindow::MainWindow(QSerialPort &port, QWidget *parent) :
     gyro_title[0] = "Gyroscope X axis";
     gyro_title[1] = "Gyroscope Y axis";
     gyro_title[2] = "Gyroscope Z axis";
+
+    QString orientation_title[3];
+    orientation_title[0] = "Orientation_ X axis";
+    orientation_title[1] = "Orientation_ Y axis";
+    orientation_title[2] = "Orientation_ Z axis";
+
     // Accelerometer charts
     for(int i=0;i<3;i++)
     {
@@ -97,6 +110,34 @@ MainWindow::MainWindow(QSerialPort &port, QWidget *parent) :
         gyro_device[i]->open(QIODevice::WriteOnly);
     }
 
+    // Orientation charts
+    for(int i=0;i<3;i++)
+    {
+        auto orientation_chart = new QChart();
+        orientation_chartView[i] = new QChartView(orientation_chart);
+        orientation_chartView[i]->setMinimumSize(400,100);
+        orientation_chart->addSeries(orientation_series[i]);
+        auto orientation_axisX = new QValueAxis();
+        orientation_axisX->setRange(0, XYSeries::sampleCount);
+        orientation_axisX->setLabelFormat("%g");
+        orientation_axisX->setTitleText("Samples");
+        auto orientation_axisY = new QValueAxis();
+        orientation_axisY->setRange(-10000, 10000);
+        orientation_axisY->setTitleText("Raw value");
+
+        orientation_chart->addAxis(orientation_axisX,Qt::AlignBottom);
+        orientation_series[i]->attachAxis(orientation_axisX);
+        orientation_chart->addAxis(orientation_axisY,Qt::AlignLeft);
+        orientation_series[i]->attachAxis(orientation_axisY);
+
+
+        orientation_chart->legend()->hide();
+        orientation_chart->setTitle(orientation_title[i]);
+
+        orientation_device[i] = new XYSeries(orientation_series[i]);
+        orientation_device[i]->open(QIODevice::WriteOnly);
+    }
+
 
     QGridLayout *gridLayout = new QGridLayout();
     gridLayout->addWidget(acc_chartView[0], 0, 0);
@@ -106,6 +147,11 @@ MainWindow::MainWindow(QSerialPort &port, QWidget *parent) :
     gridLayout->addWidget(gyro_chartView[0], 0, 1);
     gridLayout->addWidget(gyro_chartView[1], 1, 1);
     gridLayout->addWidget(gyro_chartView[2], 2, 1);
+
+    gridLayout->addWidget(orientation_chartView[0], 0, 2);
+    gridLayout->addWidget(orientation_chartView[1], 1, 2);
+    gridLayout->addWidget(orientation_chartView[2], 2, 2);
+
 
 
     ui->setupUi(this);
@@ -162,6 +208,10 @@ void MainWindow::readSerial()
             gyro[1].append(imuData.gyro.y);
             gyro[2].append(imuData.gyro.z);
 
+            orientation[0].append(int16_t(motion->orientation.x()*100.0f));
+            orientation[1].append(int16_t(motion->orientation.y()*100.0f));
+            orientation[2].append(int16_t(motion->orientation.z()*100.0f));
+
             static const int len = 20;
             if(acc[0].length() > len )            {
 
@@ -173,6 +223,12 @@ void MainWindow::readSerial()
                 gyro_device[1]->write(QByteArray(reinterpret_cast<const char*>(gyro[1].data()), int(sizeof(int16_t))*gyro[1].size()));
                 gyro_device[2]->write(QByteArray(reinterpret_cast<const char*>(gyro[2].data()), int(sizeof(int16_t))*gyro[2].size()));
 
+
+                orientation_device[0]->write(QByteArray(reinterpret_cast<const char*>(orientation[0].data()), int(sizeof(int16_t))*orientation[0].size()));
+                orientation_device[1]->write(QByteArray(reinterpret_cast<const char*>(orientation[1].data()), int(sizeof(int16_t))*orientation[1].size()));
+                orientation_device[2]->write(QByteArray(reinterpret_cast<const char*>(orientation[2].data()), int(sizeof(int16_t))*orientation[2].size()));
+
+
                 acc[0].remove(0, len );
                 acc[1].remove(0, len );
                 acc[2].remove(0, len );
@@ -180,6 +236,10 @@ void MainWindow::readSerial()
                 gyro[0].remove(0, len );
                 gyro[1].remove(0, len );
                 gyro[2].remove(0, len );
+
+                orientation[0].remove(0, len );
+                orientation[1].remove(0, len );
+                orientation[2].remove(0, len );
             }
         }else
         {

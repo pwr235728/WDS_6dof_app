@@ -42,10 +42,15 @@ private:
     QLineSeries* gyro_series[3];
     XYSeries *gyro_device[3];
 
+    QLineSeries* orientation_series[3];
+    XYSeries *orientation_device[3];
+
     Motion *motion = nullptr;
 
     QVector<int16_t> acc[3];    // [X; Y; Z]
     QVector<int16_t> gyro[3];   // [X; Y; Z]
+    QVector<int16_t> orientation[3];   // [X; Y; Z]
+
 
 private slots:
     void readSerial();
