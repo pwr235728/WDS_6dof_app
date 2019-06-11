@@ -8,13 +8,16 @@
 #include <QtCharts/QValueAxis>
 #include <QGridLayout>
 
+#include <QVector3D>
+
 MainWindow::MainWindow(QSerialPort &port, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     tabs(new QTabWidget()),
     serialPort(&port),
     terminal(new Terminal()),
-    receivedData(new QByteArray())
+    receivedData(new QByteArray()),
+    motion(new Motion())
 {
     acc_series[0] = new QLineSeries();
     acc_series[1] = new QLineSeries();
@@ -148,6 +151,8 @@ void MainWindow::readSerial()
         if(ImuParser::GetImuData(frame, imuData) == PARSER_COMPLETE)
         {
             //terminal->putData("Complete packet\n");
+
+            motion->AddData(imuData);
 
             acc[0].append(imuData.acc.x);
             acc[1].append(imuData.acc.y);

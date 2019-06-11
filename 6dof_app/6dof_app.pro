@@ -30,14 +30,16 @@ SOURCES += \
     selectport_dialog.cpp \
     terminal.cpp \
     imuparser.cpp \
-    xyseries.cpp
+    xyseries.cpp \
+    motion.cpp
 
 HEADERS += \
         mainwindow.h \
     selectport_dialog.h \
     terminal.h \
     imuparser.h \
-    xyseries.h
+    xyseries.h \
+    motion.h
 
 FORMS += \
         mainwindow.ui

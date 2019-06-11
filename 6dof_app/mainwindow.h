@@ -13,6 +13,8 @@
 #include "terminal.h"
 #include "imuparser.h"
 #include "xyseries.h"
+#include "motion.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -39,6 +41,8 @@ private:
 
     QLineSeries* gyro_series[3];
     XYSeries *gyro_device[3];
+
+    Motion *motion = nullptr;
 
     QVector<int16_t> acc[3];    // [X; Y; Z]
     QVector<int16_t> gyro[3];   // [X; Y; Z]
