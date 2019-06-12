@@ -251,8 +251,15 @@ Makefile: ..\6dof_app\6dof_app.pro C:\Qt\5.12.2\msvc2017\mkspecs\win32-msvc\qmak
 		..\6dof_app\6dof_app.pro \
 		C:\Qt\5.12.2\msvc2017\lib\Qt5Charts.prl \
 		C:\Qt\5.12.2\msvc2017\lib\Qt5Widgets.prl \
+		C:\Qt\5.12.2\msvc2017\lib\Qt53DExtras.prl \
+		C:\Qt\5.12.2\msvc2017\lib\Qt53DRender.prl \
+		C:\Qt\5.12.2\msvc2017\lib\Qt53DInput.prl \
+		C:\Qt\5.12.2\msvc2017\lib\Qt53DLogic.prl \
+		C:\Qt\5.12.2\msvc2017\lib\Qt53DCore.prl \
+		C:\Qt\5.12.2\msvc2017\lib\Qt5Gamepad.prl \
 		C:\Qt\5.12.2\msvc2017\lib\Qt5Gui.prl \
 		C:\Qt\5.12.2\msvc2017\lib\Qt5SerialPort.prl \
+		C:\Qt\5.12.2\msvc2017\lib\Qt5Network.prl \
 		C:\Qt\5.12.2\msvc2017\lib\Qt5Core.prl \
 		C:\Qt\5.12.2\msvc2017\lib\qtmaind.prl
 	$(QMAKE) -o Makefile ..\6dof_app\6dof_app.pro -spec win32-msvc "CONFIG+=debug" "CONFIG+=qml_debug"
@@ -430,8 +437,15 @@ C:\Qt\5.12.2\msvc2017\mkspecs\features\lex.prf:
 ..\6dof_app\6dof_app.pro:
 C:\Qt\5.12.2\msvc2017\lib\Qt5Charts.prl:
 C:\Qt\5.12.2\msvc2017\lib\Qt5Widgets.prl:
+C:\Qt\5.12.2\msvc2017\lib\Qt53DExtras.prl:
+C:\Qt\5.12.2\msvc2017\lib\Qt53DRender.prl:
+C:\Qt\5.12.2\msvc2017\lib\Qt53DInput.prl:
+C:\Qt\5.12.2\msvc2017\lib\Qt53DLogic.prl:
+C:\Qt\5.12.2\msvc2017\lib\Qt53DCore.prl:
+C:\Qt\5.12.2\msvc2017\lib\Qt5Gamepad.prl:
 C:\Qt\5.12.2\msvc2017\lib\Qt5Gui.prl:
 C:\Qt\5.12.2\msvc2017\lib\Qt5SerialPort.prl:
+C:\Qt\5.12.2\msvc2017\lib\Qt5Network.prl:
 C:\Qt\5.12.2\msvc2017\lib\Qt5Core.prl:
 C:\Qt\5.12.2\msvc2017\lib\qtmaind.prl:
 qmake: FORCE

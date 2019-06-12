@@ -1,6 +1,7 @@
 #include "motion.h"
 #include <QtMath>
 #include <QDebug>
+
 Motion::Motion()
 {
 
@@ -13,34 +14,36 @@ void Motion::AddData(ImuData imu_data)
     acc.setY(ACC_TO_G(imu_data.acc.y));
     acc.setZ(ACC_TO_G(imu_data.acc.z));
 
-    acc.normalize();
-
     QVector3D gyro;
     gyro.setX(GYRO_TO_DPS(imu_data.gyro.x));
     gyro.setY(GYRO_TO_DPS(imu_data.gyro.y));
     gyro.setZ(GYRO_TO_DPS(imu_data.gyro.z));
 
-    //data_acc.push_back(acc);
-   // data_gyro.push_back(gyro);
 
+    // Gyroscope quaternion and integration
+    QVector3D gyro_norm = gyro.normalized();
+    QQuaternion Qw_dt = QQuaternion::fromAxisAndAngle(gyro_norm, dt*gyro.length());
+    Qw = Qw*Qw_dt;
 
-    _gyroAngle.setX(orientation.x() + gyro.x()*dt);
-    _gyroAngle.setY(orientation.y() + gyro.y()*dt);
-    _gyroAngle.setZ(orientation.z() + gyro.z()*dt);
+    // Accelerometer vector into world frame
+    QQuaternion Qa_b = QQuaternion(0, acc);
+    QQuaternion Qa_w =(Qw* Qa_b)* Qw.inverted();
+    auto ac = Qw.rotatedVector(acc);
 
+    // Tilt correction
+    QVector3D tilt_vector = ac/ac.length();
+    QVector3D tilt_normal = QVector3D::crossProduct(tilt_vector, QVector3D(0.0, 0.0, 1.0));
+    float angle = qRadiansToDegrees(qAsin(tilt_vector.z()));
 
-    // X/sqrt(Y^2 + Z^2)
-    _accAngle.setX(qAsin(acc.y()));
-    _accAngle.setY(qAsin(acc.x()));
-    _accAngle.setZ(qTan(qSqrt(acc.x()*acc.x() + acc.y()*acc.y())/acc.z()));
+    // complementary filter
+    // Gyro correction quaternion
+    QQuaternion Qc = QQuaternion::fromAxisAndAngle(tilt_normal, (1.0-a)*(angle));
+    Qw = (Qc*Qw);
 
-    _accAngle.setX(qRadiansToDegrees(_accAngle.x()));
-    _accAngle.setY(qRadiansToDegrees(_accAngle.y()));
-    _accAngle.setZ(qRadiansToDegrees(_accAngle.z()));
+    if(isnan(Qw.x()))
+    {
+        Qw = QQuaternion(1, 0,0,0);
+    }
 
-    orientation.setX(a*_gyroAngle.x() + (1.0f - a)*_accAngle.x());
-    orientation.setY(a*_gyroAngle.y() + (1.0f - a)*-_accAngle.y());
-    orientation.setZ(a*_gyroAngle.z() + (1.0f - a)*-_accAngle.y());
-
-    qInfo() << "new data: " << _accAngle << gyro << "\n";
+    //qInfo() << Qw << (Qc*Qw);;
 }

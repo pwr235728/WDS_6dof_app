@@ -6,6 +6,7 @@
 #include <QVector3D>
 #include <limits>
 
+#include <QQuaternion>
 
 template <typename T>
 constexpr float normalize (T value) {
@@ -21,7 +22,7 @@ constexpr float normalize (T value) {
 
 // Degrees per seconds
 #define GYRO_SENS 1000.0f
-#define GYRO_TO_DPS(x) (normalize(x) * GYRO_SENS)
+#define GYRO_TO_DPS(x) ((normalize(x) * GYRO_SENS))
 
 // Gs
 #define ACC_SENS 4.0f
@@ -41,20 +42,15 @@ public:
 
     void AddData(ImuData imu_data);
 
-    QVector3D orientation = QVector3D(0,0,0); // filtered
+    QQuaternion Qw = QQuaternion(1, 0, 0, 0);
 
 private:
     const float dt = IMU_SampleTime;
-    const float a = TimeConstant/(TimeConstant + dt);
+    const float a =0.999;//TimeConstant/(TimeConstant + dt);
 
     QVector<QVector3D> data_acc;
     QVector<QVector3D> data_gyro;
 
-    QVector3D velocity = QVector3D(0,0,0);
-    QVector3D position = QVector3D(0,0,0);
-
-    QVector3D _accAngle = QVector3D(0,0,0);
-    QVector3D _gyroAngle = QVector3D(0,0,0);
 
 };
 

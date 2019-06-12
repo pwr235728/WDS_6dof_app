@@ -122,7 +122,7 @@ MainWindow::MainWindow(QSerialPort &port, QWidget *parent) :
         orientation_axisX->setLabelFormat("%g");
         orientation_axisX->setTitleText("Samples");
         auto orientation_axisY = new QValueAxis();
-        orientation_axisY->setRange(-10000, 10000);
+        orientation_axisY->setRange(-200, 200);
         orientation_axisY->setTitleText("Raw value");
 
         orientation_chart->addAxis(orientation_axisX,Qt::AlignBottom);
@@ -164,6 +164,57 @@ MainWindow::MainWindow(QSerialPort &port, QWidget *parent) :
     setCentralWidget(tabs);
 
     connect(serialPort, SIGNAL(readyRead()), this, SLOT(readSerial()));
+    view3d_init();
+}
+
+void MainWindow::view3d_init()
+{
+    Qt3DExtras::Qt3DWindow *view = new Qt3DExtras::Qt3DWindow();
+    view->defaultFrameGraph()->setClearColor(QColor(QRgb(0x4d4d4f)));
+    QWidget *container = QWidget::createWindowContainer(view);
+
+    tabs->addTab(container, "3d view");
+
+    Qt3DInput::QInputAspect *input = new Qt3DInput::QInputAspect;
+    view->registerAspect(input);
+
+    // Root entity
+    Qt3DCore::QEntity *rootEntity = new Qt3DCore::QEntity();
+
+    // Camera
+    Qt3DRender::QCamera *cameraEntity = view->camera();
+
+    cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 1000.0f);
+    cameraEntity->setPosition(QVector3D(0, 0, 00.0f));
+    cameraEntity->setUpVector(QVector3D(0, 1, 0));
+    cameraEntity->setViewCenter(QVector3D(0, 0, 0));
+
+    Qt3DCore::QEntity *lightEntity = new Qt3DCore::QEntity(rootEntity);
+    Qt3DRender::QPointLight *light = new Qt3DRender::QPointLight(lightEntity);
+    light->setColor("white");
+    light->setIntensity(1);
+    lightEntity->addComponent(light);
+    Qt3DCore::QTransform *lightTransform = new Qt3DCore::QTransform(lightEntity);
+    lightTransform->setTranslation(cameraEntity->position());
+    lightEntity->addComponent(lightTransform);
+
+    // For camera controls
+    Qt3DExtras::QFirstPersonCameraController *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
+    camController->setCamera(cameraEntity);
+
+    // Scenemodifier
+    modifier = new SceneModifier(rootEntity);
+
+    // Set root object of the scene
+    view->setRootEntity(rootEntity);
+
+    // Create control widgets
+    QCommandLinkButton *info = new QCommandLinkButton();
+    info->setText(QStringLiteral("Qt3D ready-made meshes"));
+    info->setDescription(QString::fromLatin1("Qt3D provides several ready-made meshes, like torus, cylinder, cone, "
+                                             "cube, plane and sphere."));
+    info->setIconSize(QSize(0,0));
+
 }
 
 MainWindow::~MainWindow()
@@ -208,9 +259,13 @@ void MainWindow::readSerial()
             gyro[1].append(imuData.gyro.y);
             gyro[2].append(imuData.gyro.z);
 
-            orientation[0].append(int16_t(motion->orientation.x()*100.0f));
-            orientation[1].append(int16_t(motion->orientation.y()*100.0f));
-            orientation[2].append(int16_t(motion->orientation.z()*100.0f));
+
+
+            modifier->setRotation(motion->Qw);
+            auto euler = motion->Qw.inverted().toEulerAngles();
+            orientation[0].append(int16_t(euler.x()*1.0f));
+            orientation[1].append(int16_t(euler.y()*1.0f));
+            orientation[2].append(int16_t(euler.z()*1.0f));
 
             static const int len = 20;
             if(acc[0].length() > len )            {

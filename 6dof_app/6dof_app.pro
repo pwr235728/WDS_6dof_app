@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui serialport charts
+QT       += core gui serialport charts 3dcore 3drender 3dinput 3dextras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -31,7 +31,8 @@ SOURCES += \
     terminal.cpp \
     imuparser.cpp \
     xyseries.cpp \
-    motion.cpp
+    motion.cpp \
+    scenemodifier.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,7 +40,8 @@ HEADERS += \
     terminal.h \
     imuparser.h \
     xyseries.h \
-    motion.h
+    motion.h \
+    scenemodifier.h
 
 FORMS += \
         mainwindow.ui

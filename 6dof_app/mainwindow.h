@@ -15,6 +15,44 @@
 #include "xyseries.h"
 #include "motion.h"
 
+
+#include "scenemodifier.h"
+
+#include <QGuiApplication>
+
+#include <Qt3DRender/qcamera.h>
+#include <Qt3DCore/qentity.h>
+#include <Qt3DRender/qcameralens.h>
+
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QCommandLinkButton>
+#include <QtGui/QScreen>
+
+#include <Qt3DInput/QInputAspect>
+
+#include <Qt3DExtras/qtorusmesh.h>
+#include <Qt3DRender/qmesh.h>
+#include <Qt3DRender/qtechnique.h>
+#include <Qt3DRender/qmaterial.h>
+#include <Qt3DRender/qeffect.h>
+#include <Qt3DRender/qtexture.h>
+#include <Qt3DRender/qrenderpass.h>
+#include <Qt3DRender/qsceneloader.h>
+#include <Qt3DRender/qpointlight.h>
+
+#include <Qt3DCore/qtransform.h>
+#include <Qt3DCore/qaspectengine.h>
+
+#include <Qt3DRender/qrenderaspect.h>
+#include <Qt3DExtras/qforwardrenderer.h>
+
+#include <Qt3DExtras/qt3dwindow.h>
+#include <Qt3DExtras/qfirstpersoncameracontroller.h>
+
+
 namespace Ui {
 class MainWindow;
 }
@@ -25,6 +63,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QSerialPort &port, QWidget *parent = nullptr);
+    void view3d_init();
     ~MainWindow();
 
 private:
@@ -51,6 +90,7 @@ private:
     QVector<int16_t> gyro[3];   // [X; Y; Z]
     QVector<int16_t> orientation[3];   // [X; Y; Z]
 
+    SceneModifier *modifier;
 
 private slots:
     void readSerial();
