@@ -8,6 +8,7 @@
 
 #include <QQuaternion>
 
+//! Funkcja zamienia liczbe dowolnego typu na zakres -1.0f do 1.0f typu float
 template <typename T>
 constexpr float normalize (T value) {
   return value < 0
@@ -35,20 +36,35 @@ constexpr float normalize (T value) {
 #define TimeConstant 1.0f // 1s,
 
 
+/**
+ * @brief Klasa Motion
+ *
+ * Klasa służaca do liczenia oreintacj czujnik IMU
+ * na podstawie danych z żyroskopu i akcelerometru.
+ */
 class Motion
 {
 public:
     Motion();
 
+    //! Funkcja do wprowadzania kolejnych danych z czujnika.
     void AddData(ImuData imu_data);
 
+    //! Kwaternion opisujący ostatnio obliczoną orientacje sensora.
     QQuaternion Qw = QQuaternion(1, 0, 0, 0);
 
 private:
+    //! Okres próbkowania danych w czujniku.
     const float dt = IMU_SampleTime;
-    const float a =0.999;//TimeConstant/(TimeConstant + dt);
 
+    /*! Stała używana w filtrze komplementarnym. Określa wpływ żyroskopu i akcelerometru na obliczenie orientacji.
+     *  Dobrana doświadczalnie. */
+    const float a =0.999;
+
+    //! Wektor przechowujący dane z akcelerometru.
     QVector<QVector3D> data_acc;
+
+    //! Wektor przechowujacy dane z zyroskopu.
     QVector<QVector3D> data_gyro;
 
 

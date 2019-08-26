@@ -1,0 +1,46 @@
+\hypertarget{struct_imu_frame}{}\section{Imu\+Frame Struct Reference}
+\label{struct_imu_frame}\index{ImuFrame@{ImuFrame}}
+
+
+Struktura \mbox{\hyperlink{struct_imu_frame}{Imu\+Frame}}.  
+
+
+
+
+{\ttfamily \#include $<$imuparser.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_imu_frame_addbc32b1569d6433d9ca6a8974231b98}\label{struct_imu_frame_addbc32b1569d6433d9ca6a8974231b98}} 
+uchar \mbox{\hyperlink{struct_imu_frame_addbc32b1569d6433d9ca6a8974231b98}{Get\+Header\+Sum}} ()
+\begin{DoxyCompactList}\small\item\em Funkcja licząca sumę kontrolną nagłówka. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_imu_frame_acc8f3636213ff45142fbf95ae59daba4}\label{struct_imu_frame_acc8f3636213ff45142fbf95ae59daba4}} 
+uchar \mbox{\hyperlink{struct_imu_frame_acc8f3636213ff45142fbf95ae59daba4}{Get\+Data\+Sum}} ()
+\begin{DoxyCompactList}\small\item\em Funckaj licząca sume kontrolną danych. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_imu_frame_a9cebaa9b0a3628029afb610ba6b4ba93}\label{struct_imu_frame_a9cebaa9b0a3628029afb610ba6b4ba93}} 
+\mbox{\hyperlink{struct_imu_frame_a9cebaa9b0a3628029afb610ba6b4ba93}{Imu\+Frame}} ()
+\begin{DoxyCompactList}\small\item\em Domyślny konstruktor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_imu_frame_a502e1d6080bc28dea177d7e1e782dbf3}\label{struct_imu_frame_a502e1d6080bc28dea177d7e1e782dbf3}} 
+uchar \mbox{\hyperlink{struct_imu_frame_a502e1d6080bc28dea177d7e1e782dbf3}{id}}
+\begin{DoxyCompactList}\small\item\em Identyfikator polecenia. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_imu_frame_af8e59d9cac30831c6d00d12e4ae4e518}\label{struct_imu_frame_af8e59d9cac30831c6d00d12e4ae4e518}} 
+uchar \mbox{\hyperlink{struct_imu_frame_af8e59d9cac30831c6d00d12e4ae4e518}{length}}
+\begin{DoxyCompactList}\small\item\em Ilość przesyłanych danych. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_imu_frame_acda569b9f72732a10f14612504b08019}\label{struct_imu_frame_acda569b9f72732a10f14612504b08019}} 
+uchar \mbox{\hyperlink{struct_imu_frame_acda569b9f72732a10f14612504b08019}{data}} \mbox{[}256\mbox{]}
+\begin{DoxyCompactList}\small\item\em Tablica zawierajaca odebrane dane. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Struktura \mbox{\hyperlink{struct_imu_frame}{Imu\+Frame}}. 
+
+Struktura opisująca ramke danych odbiernaych przez program. Jedna ramka opisuje jedno polecenie. Sumy kontrolne nagłówka i dnaych są oddzielone celowo. W przypadku gdy ramka jest niepoprawna(błąd w przesyłaniu), można już po samym nagłówku odżucić pakiet. I nasłuchiwać na kolejny. 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+imuparser.\+h\item 
+imuparser.\+cpp\end{DoxyCompactItemize}
