@@ -4,6 +4,9 @@ Projekt składa się z dwóch części: kontrolera bezprzewodowego wraz z odbior
 oraz aplikacji komunikującej się z kontrolerem.
 To repozytorium zawiera część z aplikacją desktopowaą
 
+### Kontroler:
+https://github.com/pwr235728/WDS
+
 ### Aplikacja
 Aplikacja odbiera dane wysyłane przez kontrole i pozwala na wizualizację jego orientacji. Aplikacja zostałą napisana w języku C++ z wykorzystaniem bibliotek Qt.
 
