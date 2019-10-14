@@ -8,7 +8,9 @@ To repozytorium zawiera część z aplikacją desktopowaą
 Aplikacja odbiera dane wysyłane przez kontrole i pozwala na wizualizację jego orientacji. Aplikacja zostałą napisana w języku C++ z wykorzystaniem bibliotek Qt.
 
 
+## Wygląd aplikacji:
+### Widok wizualizacji:
 ![Widok wizualizacji](./git_6dof_app/wiz.png)
-
+### Widok odbieranych danych w postaci wykresów
 ![Widok wizualizacji](./git_6dof_app/charts.png)
 
